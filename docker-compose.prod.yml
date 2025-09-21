@@ -1,0 +1,31 @@
+version: '3.8'
+
+services:
+  oci-app:
+    image: ghcr.io/janake/ociprodetbe:latest
+    ports:
+      - "8080:8080"
+    environment:
+      - SPRING_PROFILES_ACTIVE=production
+      - KEYCLOAK_CLIENT_ID=${KEYCLOAK_CLIENT_ID:-ociprodet}
+      - KEYCLOAK_CLIENT_AUTH_METHOD=${KEYCLOAK_CLIENT_AUTH_METHOD:-none}
+      - KEYCLOAK_CLIENT_SECRET=${KEYCLOAK_CLIENT_SECRET}
+    healthcheck:
+      test: ["CMD", "wget", "--no-verbose", "--tries=1", "--spider", "http://localhost:8080/actuator/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+    restart: unless-stopped
+    deploy:
+      resources:
+        limits:
+          memory: 1G
+          cpus: "0.5"
+        reservations:
+          memory: 512M
+          cpus: "0.25"
+
+networks:
+  default:
+    name: oci-network
