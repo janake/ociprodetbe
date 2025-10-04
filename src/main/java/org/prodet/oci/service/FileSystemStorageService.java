@@ -6,6 +6,7 @@ import org.springframework.core.io.UrlResource;
 import org.springframework.stereotype.Service;
 import org.springframework.util.FileSystemUtils;
 import org.springframework.web.multipart.MultipartFile;
+import org.prodet.oci.config.properties.StorageProperties;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -22,8 +23,14 @@ public class FileSystemStorageService implements StorageService {
     private final Path rootLocation;
 
     @Autowired
-    public FileSystemStorageService() {
-        this.rootLocation = Paths.get("uploads");
+    public FileSystemStorageService(StorageProperties properties) {
+        this.rootLocation = Paths.get(properties.getLocation());
+        // Ensure the upload directory exists on startup
+        try {
+            Files.createDirectories(this.rootLocation);
+        } catch (IOException e) {
+            throw new RuntimeException("Could not initialize storage at " + this.rootLocation, e);
+        }
     }
 
     @Override
@@ -32,6 +39,9 @@ public class FileSystemStorageService implements StorageService {
             if (file.isEmpty()) {
                 throw new RuntimeException("Failed to store empty file.");
             }
+            // Ensure directory exists in case it's been removed
+            Files.createDirectories(this.rootLocation);
+
             Path destinationFile = this.rootLocation.resolve(
                     Paths.get(file.getOriginalFilename()))
                     .normalize().toAbsolutePath();
