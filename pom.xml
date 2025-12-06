@@ -5,8 +5,8 @@
 	<parent>
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-starter-parent</artifactId>
-		<version>3.5.6</version>
-		<relativePath/> <!-- lookup parent from repository -->
+		<version>4.0.0</version>
+		<relativePath/>
 	</parent>
 	<groupId>org.prodet</groupId>
 	<artifactId>oci</artifactId>
@@ -28,10 +28,9 @@
 	</scm>
 	<properties>
 		<java.version>21</java.version>
-		<!-- OCI Registry Configuration - DO NOT put real values here, use environment variables or Maven profiles -->
-		<oci.registry.url>SET_VIA_ENV_OR_MAVEN_PARAM</oci.registry.url>
-		<oci.username>SET_VIA_ENV_OR_MAVEN_PARAM</oci.username>
-		<oci.password>SET_VIA_ENV_OR_MAVEN_PARAM</oci.password>
+		<spring-boot.version>4.0.0</spring-boot.version>
+		<registry.host>reg.prodet.org</registry.host>
+		<registry.repository>ociprodetbe</registry.repository>
 	</properties>
 	<dependencies>
 		<dependency>
@@ -110,43 +109,17 @@
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
+				<version>${spring-boot.version}</version>
 				<configuration>
+					<image>
+						<name>${registry.host}/${registry.repository}:${project.version}</name>
+					</image>
 					<excludes>
 						<exclude>
 							<groupId>org.projectlombok</groupId>
 							<artifactId>lombok</artifactId>
 						</exclude>
 					</excludes>
-				</configuration>
-			</plugin>
-			<plugin>
-				<groupId>com.google.cloud.tools</groupId>
-				<artifactId>jib-maven-plugin</artifactId>
-				<version>3.4.0</version>
-				<configuration>
-					<from>
-						<image>eclipse-temurin:21-jre</image>
-					</from>
-					<to>
-						<image>ociprodetbe</image>
-						<tags>
-							<tag>latest</tag>
-							<tag>${project.version}</tag>
-						</tags>
-					</to>
-					<container>
-						<jvmFlags>
-							<jvmFlag>-Xms128m</jvmFlag>
-							<jvmFlag>-Xmx256m</jvmFlag>
-						</jvmFlags>
-						<ports>
-							<port>8080</port>
-						</ports>
-						<environment>
-							<SPRING_PROFILES_ACTIVE>docker</SPRING_PROFILES_ACTIVE>
-						</environment>
-						<creationTime>USE_CURRENT_TIMESTAMP</creationTime>
-					</container>
 				</configuration>
 			</plugin>
 		</plugins>
