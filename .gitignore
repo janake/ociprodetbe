@@ -86,3 +86,6 @@ docker-compose.yml
 
 # Uploads
 uploads/
+
+# Docs (kept locally, not versioned)
+docs/

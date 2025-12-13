@@ -18,9 +18,12 @@ import org.springframework.security.web.authentication.LoginUrlAuthenticationEnt
 import org.springframework.security.web.header.writers.ReferrerPolicyHeaderWriter;
 import org.springframework.security.web.util.matcher.RequestHeaderRequestMatcher;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.Profile;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnWebApplication;
 
 @Configuration
 @EnableWebSecurity
+@ConditionalOnWebApplication(type = ConditionalOnWebApplication.Type.SERVLET)
 public class SecurityConfig {
 
     private final KeycloakLogoutHandler keycloakLogoutHandler;
@@ -44,7 +47,8 @@ public class SecurityConfig {
     }
 
     @Bean
-    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+    @Profile("prod")
+    public SecurityFilterChain securityFilterChainProd(HttpSecurity http) throws Exception {
         http
             // We keep CSRF disabled for API style usage; could be refined later
             .csrf(AbstractHttpConfigurer::disable)
@@ -82,6 +86,32 @@ public class SecurityConfig {
                 .referrerPolicy(referrer -> referrer
                     .policy(ReferrerPolicyHeaderWriter.ReferrerPolicy.STRICT_ORIGIN_WHEN_CROSS_ORIGIN)
                 )
+            );
+
+        return http.build();
+    }
+
+    @Bean
+    @Profile("!prod")
+    public SecurityFilterChain securityFilterChainNonProd(HttpSecurity http) throws Exception {
+        http
+            .csrf(AbstractHttpConfigurer::disable)
+            .cors(cors -> {})
+            .sessionManagement(sm -> sm.sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED))
+            .authorizeHttpRequests(auth -> auth
+                .requestMatchers("/actuator/health", "/actuator/info").permitAll()
+                .requestMatchers("/h2-console/**").permitAll()
+                .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
+                .requestMatchers("/api/**").authenticated()
+                .anyRequest().permitAll()
+            )
+            .oauth2ResourceServer(oauth2 -> oauth2.jwt(jwt -> {}))
+            .exceptionHandling(ex -> ex
+                .defaultAuthenticationEntryPointFor(new BearerTokenAuthenticationEntryPoint(), new RequestHeaderRequestMatcher("Authorization"))
+                .defaultAccessDeniedHandlerFor(new BearerTokenAccessDeniedHandler(), new RequestHeaderRequestMatcher("Authorization"))
+            )
+            .headers(headers -> headers
+                .frameOptions(HeadersConfigurer.FrameOptionsConfig::disable)
             );
 
         return http.build();
