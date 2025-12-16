@@ -40,6 +40,7 @@
 	</properties>
 	<dependencyManagement>
 		<dependencies>
+			<!-- OCI Java SDK BOM: az OCI SDK modulok verzióinak összefésülése (secrets + httpclient), hogy ne legyen transzitív verzióütközés. -->
 			<dependency>
 				<groupId>com.oracle.oci.sdk</groupId>
 				<artifactId>oci-java-sdk-bom</artifactId>
@@ -50,6 +51,7 @@
 		</dependencies>
 	</dependencyManagement>
 	<dependencies>
+		<!-- Actuator: health endpoint (prod-on csak health), liveness/readiness és alap metrikák; docker-compose integrációt kizárjuk (nem kell és CI/prod környezetben zavaró lehet). -->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-actuator</artifactId>
@@ -64,6 +66,7 @@
 				</exclusion>
 			</exclusions>
 		</dependency>
+		<!-- OAuth2 client: Keycloak/OpenID Connect login flow (frontend/CLI/Swagger stb. felé, ha kell); docker-compose integráció kizárva. -->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-oauth2-client</artifactId>
@@ -74,102 +77,113 @@
 				</exclusion>
 			</exclusions>
 		</dependency>
+		<!-- Spring Security: minden API auth-hoz kötése, CORS/CSRF policy, endpoint védelem. -->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-security</artifactId>
 		</dependency>
+		<!-- Spring MVC + JSON: REST API-k (/api/**), Jackson alapú request/response szerializáció. -->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-web</artifactId>
 		</dependency>
+		<!-- Tracing: request-ek trace/span korrelációja (brave bridge), logokban/megfigyelésben követhetőség. -->
 		<dependency>
 			<groupId>io.micrometer</groupId>
 			<artifactId>micrometer-tracing-bridge-brave</artifactId>
 		</dependency>
+		<!-- JDBC + HikariCP: JdbcTemplate-alapú repository réteg és connection pooling. -->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-jdbc</artifactId>
 		</dependency>
+		<!-- Flyway core: DB migrációk automatikus futtatása induláskor (Oracle/H2 profiloktól függően). -->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-flyway</artifactId>
 		</dependency>
-		<!-- Flyway 11+ uses separate database modules (required for Oracle support) -->
+		<!-- Flyway 11+ Oracle modul: Oracle 19 támogatás; enélkül hiba volt: "Unsupported Database: Oracle 19.0". -->
 		<dependency>
 			<groupId>org.flywaydb</groupId>
 			<artifactId>flyway-database-oracle</artifactId>
 		</dependency>
+		<!-- H2 (runtime): lokális dev/docker profilokban gyors, fájl nélküli/embedded DB; Flyway scriptek erre is lefutnak. -->
 		<dependency>
 			<groupId>com.h2database</groupId>
 			<artifactId>h2</artifactId>
 			<scope>runtime</scope>
 		</dependency>
+		<!-- Oracle JDBC driver: Autonomous Database (ADB) eléréshez (TCPS + wallet) és prod Oracle kapcsolathoz. -->
 		<dependency>
 			<groupId>com.oracle.database.jdbc</groupId>
 			<artifactId>ojdbc11</artifactId>
 			<version>${oracle.jdbc.version}</version>
 		</dependency>
+		<!-- Oracle UCP: (opcionális) Oracle pool/DS implementációk; több környezetben stabilabb lehet speciális Oracle beállításoknál. -->
 		<dependency>
 			<groupId>com.oracle.database.jdbc</groupId>
 			<artifactId>ucp</artifactId>
 			<version>${oracle.jdbc.version}</version>
 		</dependency>
-		<!-- Required for ADB wallet (TCPS) connections: fixes ORA-17167 (missing oracle/security/pki/OracleWallet) -->
+		<!-- ADB wallet/TCPS PKI: szükséges a wallet alapú TLS-hez; ezzel javítottuk: ORA-17167 (missing oracle/security/pki/OracleWallet). -->
 		<dependency>
 			<groupId>com.oracle.database.security</groupId>
 			<artifactId>oraclepki</artifactId>
 			<version>${oracle.jdbc.version}</version>
 		</dependency>
-		<!-- https://mvnrepository.com/artifact/com.oracle.database.security/osdt_cert -->
+		<!-- ADB wallet/TCPS PKI: Oracle Security (OSDT) certificate lib (oraclepki függősége, wallet olvasás/tanúsítványok). -->
 		<dependency>
 			<groupId>com.oracle.database.security</groupId>
 			<artifactId>osdt_cert</artifactId>
 			<version>${oracle.jdbc.version}</version>
 		</dependency>
-		<!-- https://mvnrepository.com/artifact/com.oracle.database.security/osdt_core -->
+		<!-- ADB wallet/TCPS PKI: Oracle Security (OSDT) core lib (oraclepki függősége). -->
 		<dependency>
 			<groupId>com.oracle.database.security</groupId>
 			<artifactId>osdt_core</artifactId>
 			<version>${oracle.jdbc.version}</version>
 		</dependency>
+		<!-- OCI Vault Secrets: DB user/jelszó betöltése Vault Secret OCID alapján (prod induláskor, env post-processor). -->
 		<dependency>
 			<groupId>com.oracle.oci.sdk</groupId>
 			<artifactId>oci-java-sdk-secrets</artifactId>
 		</dependency>
-		<!-- OCI Java SDK needs an HTTP client implementation on the classpath (for IMDS/instance principals + service calls) -->
-		<!-- Use Jersey 3 (Jakarta) to avoid javax.ws.rs conflicts on Spring Boot 4 / Java 21 -->
+		<!-- OCI Java SDK HTTP client provider: instance principals (IMDS 169.254.169.254) + Vault API hívásokhoz kell; Jersey 3-at (Jakarta) használunk, mert a javax.ws.rs/Jersey2 ütközött Spring Boot 4 / Java 21 alatt. -->
 		<dependency>
 			<groupId>com.oracle.oci.sdk</groupId>
 			<artifactId>oci-java-sdk-common-httpclient-jersey3</artifactId>
 		</dependency>
-		<!-- Jersey3 provider expects Jakarta REST API -->
+		<!-- Jakarta REST API: Jersey3 provider futásidejű igénye (korábban javax.ws.rs hiány/LinkageError miatt elhasalt). -->
 		<dependency>
 			<groupId>jakarta.ws.rs</groupId>
 			<artifactId>jakarta.ws.rs-api</artifactId>
 			<version>3.1.0</version>
 		</dependency>
-		<!-- OCI SDK brings Jackson2 databind but excludes jackson-core; Flyway still needs Jackson2 API classes -->
+		<!-- Jackson core: OCI SDK/Flyway tranzitív exclude miatt kellett visszatenni (különben hiányzó Jackson osztályok). -->
 		<dependency>
 			<groupId>com.fasterxml.jackson.core</groupId>
 			<artifactId>jackson-core</artifactId>
 		</dependency>
 
+		<!-- Lombok: fejlesztői convenience (getter/setter/ctor); build-image-nál kizárjuk a runtime classpath-ból. -->
 		<dependency>
 			<groupId>org.projectlombok</groupId>
 			<artifactId>lombok</artifactId>
 			<optional>true</optional>
 		</dependency>
+		<!-- Tesztek: JUnit + Spring Boot test infra. -->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-test</artifactId>
 			<scope>test</scope>
 		</dependency>
+		<!-- Spring Security test: MockMvc security support (JWT/auth tesztekhez). -->
 		<dependency>
 			<groupId>org.springframework.security</groupId>
 			<artifactId>spring-security-test</artifactId>
 			<scope>test</scope>
 		</dependency>
-		<!-- Add OAuth2 Resource Server to validate JWTs from Keycloak -->
+		<!-- OAuth2 Resource Server: Bearer JWT validáció a backend oldalon (Keycloak realm JWKS alapján). -->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-oauth2-resource-server</artifactId>
@@ -178,6 +192,7 @@
 
 	<build>
 		<plugins>
+			<!-- Lombok annotation processing: fordításkor generált kód (getter/setter/ctor), runtime dependency nélkül. -->
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-compiler-plugin</artifactId>
@@ -190,6 +205,7 @@
 					</annotationProcessorPaths>
 				</configuration>
 			</plugin>
+			<!-- Spring Boot plugin: fat-jar repackage + (opcionálisan) Paketo buildpack image build; lombokot kizárjuk a végső artifactból. -->
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
