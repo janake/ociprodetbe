@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document id="seed-xml-01" version="1.0">
+    <header>
+        <source>ociprodet</source>
+        <type>example</type>
+        <createdBy>seed-generator</createdBy>
+    </header>
+    <payload>
+        <items>
+            <item index="1"><name>Alpha</name><value>100</value></item>
+            <item index="2"><name>Beta</name><value>200</value></item>
+            <item index="3"><name>Gamma</name><value>300</value></item>
+            <item index="4"><name>Delta</name><value>400</value></item>
+            <item index="5"><name>Epsilon</name><value>500</value></item>
+        </items>
+        <notes>
+            <note line="1">Lorem ipsum dolor sit amet, consectetur adipiscing elit.</note>
+            <note line="2">Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</note>
+            <note line="3">Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris.</note>
+            <note line="4">Duis aute irure dolor in reprehenderit in voluptate velit esse cillum.</note>
+            <note line="5">Excepteur sint occaecat cupidatat non proident, sunt in culpa.</note>
+        </notes>
+    </payload>
+</document>

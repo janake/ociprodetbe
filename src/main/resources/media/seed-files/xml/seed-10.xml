@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document id="seed-xml-10" version="1.0">
+    <header>
+        <source>ociprodet</source>
+        <type>example</type>
+        <createdBy>seed-generator</createdBy>
+    </header>
+    <payload>
+        <items>
+            <item index="1"><name>Oak</name><value>800</value></item>
+            <item index="2"><name>Pine</name><value>700</value></item>
+            <item index="3"><name>Birch</name><value>600</value></item>
+            <item index="4"><name>Maple</name><value>500</value></item>
+            <item index="5"><name>Cedar</name><value>400</value></item>
+        </items>
+        <notes>
+            <note line="1">Morbi nec metus. Phasellus blandit leo ut odio.</note>
+            <note line="2">Vivamus laoreet. Nullam tincidunt adipiscing enim.</note>
+            <note line="3">Phasellus tempus. Proin viverra, ligula sit amet ultrices semper.</note>
+            <note line="4">Nam adipiscing. Vestibulum eu odio.</note>
+            <note line="5">Nullam nulla eros, ultricies sit amet, nonummy id, imperdiet feugiat.</note>
+        </notes>
+    </payload>
+</document>

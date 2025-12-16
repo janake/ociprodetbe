@@ -31,7 +31,24 @@
 		<spring-boot.version>4.0.0</spring-boot.version>
 		<registry.host>reg.prodet.org</registry.host>
 		<registry.repository>ociprodetbe</registry.repository>
+		<!-- Overrideable image tag/name for spring-boot:build-image -->
+		<image.tag>${project.version}</image.tag>
+		<image.name>${registry.host}/${registry.repository}:${image.tag}</image.name>
+		<!-- Keep Oracle JDBC + wallet/PKI libs on the same version line -->
+		<oracle.jdbc.version>21.20.0.0</oracle.jdbc.version>
+		<oci.sdk.version>3.56.0</oci.sdk.version>
 	</properties>
+	<dependencyManagement>
+		<dependencies>
+			<dependency>
+				<groupId>com.oracle.oci.sdk</groupId>
+				<artifactId>oci-java-sdk-bom</artifactId>
+				<version>${oci.sdk.version}</version>
+				<type>pom</type>
+				<scope>import</scope>
+			</dependency>
+		</dependencies>
+	</dependencyManagement>
 	<dependencies>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
@@ -77,6 +94,11 @@
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-flyway</artifactId>
 		</dependency>
+		<!-- Flyway 11+ uses separate database modules (required for Oracle support) -->
+		<dependency>
+			<groupId>org.flywaydb</groupId>
+			<artifactId>flyway-database-oracle</artifactId>
+		</dependency>
 		<dependency>
 			<groupId>com.h2database</groupId>
 			<artifactId>h2</artifactId>
@@ -85,10 +107,51 @@
 		<dependency>
 			<groupId>com.oracle.database.jdbc</groupId>
 			<artifactId>ojdbc11</artifactId>
+			<version>${oracle.jdbc.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>com.oracle.database.jdbc</groupId>
 			<artifactId>ucp</artifactId>
+			<version>${oracle.jdbc.version}</version>
+		</dependency>
+		<!-- Required for ADB wallet (TCPS) connections: fixes ORA-17167 (missing oracle/security/pki/OracleWallet) -->
+		<dependency>
+			<groupId>com.oracle.database.security</groupId>
+			<artifactId>oraclepki</artifactId>
+			<version>${oracle.jdbc.version}</version>
+		</dependency>
+		<!-- https://mvnrepository.com/artifact/com.oracle.database.security/osdt_cert -->
+		<dependency>
+			<groupId>com.oracle.database.security</groupId>
+			<artifactId>osdt_cert</artifactId>
+			<version>${oracle.jdbc.version}</version>
+		</dependency>
+		<!-- https://mvnrepository.com/artifact/com.oracle.database.security/osdt_core -->
+		<dependency>
+			<groupId>com.oracle.database.security</groupId>
+			<artifactId>osdt_core</artifactId>
+			<version>${oracle.jdbc.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>com.oracle.oci.sdk</groupId>
+			<artifactId>oci-java-sdk-secrets</artifactId>
+		</dependency>
+		<!-- OCI Java SDK needs an HTTP client implementation on the classpath (for IMDS/instance principals + service calls) -->
+		<!-- Use Jersey 3 (Jakarta) to avoid javax.ws.rs conflicts on Spring Boot 4 / Java 21 -->
+		<dependency>
+			<groupId>com.oracle.oci.sdk</groupId>
+			<artifactId>oci-java-sdk-common-httpclient-jersey3</artifactId>
+		</dependency>
+		<!-- Jersey3 provider expects Jakarta REST API -->
+		<dependency>
+			<groupId>jakarta.ws.rs</groupId>
+			<artifactId>jakarta.ws.rs-api</artifactId>
+			<version>3.1.0</version>
+		</dependency>
+		<!-- OCI SDK brings Jackson2 databind but excludes jackson-core; Flyway still needs Jackson2 API classes -->
+		<dependency>
+			<groupId>com.fasterxml.jackson.core</groupId>
+			<artifactId>jackson-core</artifactId>
 		</dependency>
 
 		<dependency>
@@ -133,7 +196,7 @@
 				<version>${spring-boot.version}</version>
 				<configuration>
 					<image>
-						<name>${registry.host}/${registry.repository}:${project.version}</name>
+						<name>${image.name}</name>
 					</image>
 					<excludes>
 						<exclude>

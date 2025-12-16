@@ -1,0 +1,23 @@
+{
+  "id": "seed-json-06",
+  "source": "ociprodet",
+  "type": "example",
+  "meta": {
+    "createdBy": "seed-generator",
+    "version": "1.0"
+  },
+  "items": [
+    { "index": 1, "name": "North", "value": 1 },
+    { "index": 2, "name": "South", "value": 2 },
+    { "index": 3, "name": "East", "value": 3 },
+    { "index": 4, "name": "West", "value": 4 },
+    { "index": 5, "name": "Center", "value": 5 }
+  ],
+  "notes": [
+    "Vestibulum purus quam, scelerisque ut, mollis sed, nonummy id, metus.",
+    "Nullam accumsan lorem in dui. Cras ultricies mi eu turpis hendrerit fringilla.",
+    "Vestibulum ante ipsum primis in faucibus orci luctus et ultrices.",
+    "In ac dui quis mi consectetuer lacinia. Nam pretium turpis et arcu.",
+    "Duis arcu tortor, suscipit eget, imperdiet nec, imperdiet iaculis, ipsum."
+  ]
+}

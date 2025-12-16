@@ -1,0 +1,23 @@
+{
+  "id": "seed-json-07",
+  "source": "ociprodet",
+  "type": "example",
+  "meta": {
+    "createdBy": "seed-generator",
+    "version": "1.0"
+  },
+  "items": [
+    { "index": 1, "name": "Apple", "value": 110 },
+    { "index": 2, "name": "Banana", "value": 220 },
+    { "index": 3, "name": "Cherry", "value": 330 },
+    { "index": 4, "name": "Date", "value": 440 },
+    { "index": 5, "name": "Fig", "value": 550 }
+  ],
+  "notes": [
+    "Pellentesque habitant morbi tristique senectus et netus et malesuada fames.",
+    "Fusce ac felis sit amet ligula pharetra condimentum.",
+    "Maecenas nec odio et ante tincidunt tempus. Donec vitae sapien ut libero.",
+    "Aenean vulputate eleifend tellus. Aenean leo ligula, porttitor eu, consequat.",
+    "Quisque rutrum. Aenean imperdiet. Etiam ultricies nisi vel augue."
+  ]
+}

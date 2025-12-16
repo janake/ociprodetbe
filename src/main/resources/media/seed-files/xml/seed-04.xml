@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document id="seed-xml-04" version="1.0">
+    <header>
+        <source>ociprodet</source>
+        <type>example</type>
+        <createdBy>seed-generator</createdBy>
+    </header>
+    <payload>
+        <items>
+            <item index="1"><name>Red</name><value>10</value></item>
+            <item index="2"><name>Green</name><value>20</value></item>
+            <item index="3"><name>Blue</name><value>30</value></item>
+            <item index="4"><name>Yellow</name><value>40</value></item>
+            <item index="5"><name>Purple</name><value>50</value></item>
+        </items>
+        <notes>
+            <note line="1">Suspendisse potenti. Sed egestas, ante et vulputate volutpat.</note>
+            <note line="2">Phasellus leo dolor, tempus non, auctor et, hendrerit quis, nisi.</note>
+            <note line="3">Curabitur ligula sapien, tincidunt non, euismod vitae, posuere imperdiet.</note>
+            <note line="4">Maecenas malesuada. Praesent congue erat at massa.</note>
+            <note line="5">Sed cursus turpis vitae tortor. Donec posuere vulputate arcu.</note>
+        </notes>
+    </payload>
+</document>

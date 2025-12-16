@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document id="seed-xml-06" version="1.0">
+    <header>
+        <source>ociprodet</source>
+        <type>example</type>
+        <createdBy>seed-generator</createdBy>
+    </header>
+    <payload>
+        <items>
+            <item index="1"><name>North</name><value>1</value></item>
+            <item index="2"><name>South</name><value>2</value></item>
+            <item index="3"><name>East</name><value>3</value></item>
+            <item index="4"><name>West</name><value>4</value></item>
+            <item index="5"><name>Center</name><value>5</value></item>
+        </items>
+        <notes>
+            <note line="1">Vestibulum purus quam, scelerisque ut, mollis sed, nonummy id, metus.</note>
+            <note line="2">Nullam accumsan lorem in dui. Cras ultricies mi eu turpis hendrerit fringilla.</note>
+            <note line="3">Vestibulum ante ipsum primis in faucibus orci luctus et ultrices.</note>
+            <note line="4">In ac dui quis mi consectetuer lacinia. Nam pretium turpis et arcu.</note>
+            <note line="5">Duis arcu tortor, suscipit eget, imperdiet nec, imperdiet iaculis, ipsum.</note>
+        </notes>
+    </payload>
+</document>

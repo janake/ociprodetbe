@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document id="seed-xml-09" version="1.0">
+    <header>
+        <source>ociprodet</source>
+        <type>example</type>
+        <createdBy>seed-generator</createdBy>
+    </header>
+    <payload>
+        <items>
+            <item index="1"><name>Mercury</name><value>9</value></item>
+            <item index="2"><name>Neon</name><value>10</value></item>
+            <item index="3"><name>Argon</name><value>18</value></item>
+            <item index="4"><name>Krypton</name><value>36</value></item>
+            <item index="5"><name>Xenon</name><value>54</value></item>
+        </items>
+        <notes>
+            <note line="1">In enim justo, rhoncus ut, imperdiet a, venenatis vitae, justo.</note>
+            <note line="2">Nullam dictum felis eu pede mollis pretium. Integer tincidunt.</note>
+            <note line="3">Cras dapibus. Vivamus elementum semper nisi.</note>
+            <note line="4">Aenean vulputate eleifend tellus. Aenean leo ligula.</note>
+            <note line="5">Nam eget dui. Etiam rhoncus. Maecenas tempus, tellus eget condimentum.</note>
+        </notes>
+    </payload>
+</document>

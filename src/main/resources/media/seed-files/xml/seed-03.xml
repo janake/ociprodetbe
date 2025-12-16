@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document id="seed-xml-03" version="1.0">
+    <header>
+        <source>ociprodet</source>
+        <type>example</type>
+        <createdBy>seed-generator</createdBy>
+    </header>
+    <payload>
+        <items>
+            <item index="1"><name>Sun</name><value>11</value></item>
+            <item index="2"><name>Moon</name><value>22</value></item>
+            <item index="3"><name>Earth</name><value>33</value></item>
+            <item index="4"><name>Mars</name><value>44</value></item>
+            <item index="5"><name>Venus</name><value>55</value></item>
+        </items>
+        <notes>
+            <note line="1">Integer in mauris eu nibh euismod gravida.</note>
+            <note line="2">Duis ac tellus et risus vulputate vehicula.</note>
+            <note line="3">Donec lobortis risus a elit. Etiam tempor.</note>
+            <note line="4">Ut ullamcorper, ligula eu tempor congue, eros est euismod turpis.</note>
+            <note line="5">Proin ultricies, augue at imperdiet viverra, enim nisl feugiat enim.</note>
+        </notes>
+    </payload>
+</document>

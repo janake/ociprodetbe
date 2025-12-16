@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document id="seed-xml-02" version="1.0">
+    <header>
+        <source>ociprodet</source>
+        <type>example</type>
+        <createdBy>seed-generator</createdBy>
+    </header>
+    <payload>
+        <items>
+            <item index="1"><name>Orion</name><value>101</value></item>
+            <item index="2"><name>Pegasus</name><value>202</value></item>
+            <item index="3"><name>Lyra</name><value>303</value></item>
+            <item index="4"><name>Cygnus</name><value>404</value></item>
+            <item index="5"><name>Draco</name><value>505</value></item>
+        </items>
+        <notes>
+            <note line="1">Curabitur pretium tincidunt lacus. Nulla gravida orci a odio.</note>
+            <note line="2">Nullam varius, turpis et commodo pharetra, est eros bibendum elit.</note>
+            <note line="3">Aliquam erat volutpat. Nam dui mi, tincidunt quis, accumsan porttitor.</note>
+            <note line="4">Phasellus ultrices nulla quis nibh. Quisque a lectus.</note>
+            <note line="5">Donec consectetuer ligula vulputate sem tristique cursus.</note>
+        </notes>
+    </payload>
+</document>

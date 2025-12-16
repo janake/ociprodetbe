@@ -1,0 +1,23 @@
+{
+  "id": "seed-json-10",
+  "source": "ociprodet",
+  "type": "example",
+  "meta": {
+    "createdBy": "seed-generator",
+    "version": "1.0"
+  },
+  "items": [
+    { "index": 1, "name": "Oak", "value": 800 },
+    { "index": 2, "name": "Pine", "value": 700 },
+    { "index": 3, "name": "Birch", "value": 600 },
+    { "index": 4, "name": "Maple", "value": 500 },
+    { "index": 5, "name": "Cedar", "value": 400 }
+  ],
+  "notes": [
+    "Morbi nec metus. Phasellus blandit leo ut odio.",
+    "Vivamus laoreet. Nullam tincidunt adipiscing enim.",
+    "Phasellus tempus. Proin viverra, ligula sit amet ultrices semper.",
+    "Nam adipiscing. Vestibulum eu odio.",
+    "Nullam nulla eros, ultricies sit amet, nonummy id, imperdiet feugiat."
+  ]
+}

@@ -1,0 +1,23 @@
+{
+  "id": "seed-json-08",
+  "source": "ociprodet",
+  "type": "example",
+  "meta": {
+    "createdBy": "seed-generator",
+    "version": "1.0"
+  },
+  "items": [
+    { "index": 1, "name": "One", "value": 1001 },
+    { "index": 2, "name": "Two", "value": 1002 },
+    { "index": 3, "name": "Three", "value": 1003 },
+    { "index": 4, "name": "Four", "value": 1004 },
+    { "index": 5, "name": "Five", "value": 1005 }
+  ],
+  "notes": [
+    "Donec sodales sagittis magna. Sed consequat, leo eget bibendum sodales.",
+    "Praesent ac sem eget est egestas volutpat. Vivamus aliquet elit ac nisl.",
+    "Etiam sit amet orci eget eros faucibus tincidunt. Duis leo.",
+    "Sed fringilla mauris sit amet nibh. Donec sodales sagittis magna.",
+    "Sed consequat, leo eget bibendum sodales, augue velit cursus nunc."
+  ]
+}

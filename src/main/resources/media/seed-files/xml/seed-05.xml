@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document id="seed-xml-05" version="1.0">
+    <header>
+        <source>ociprodet</source>
+        <type>example</type>
+        <createdBy>seed-generator</createdBy>
+    </header>
+    <payload>
+        <items>
+            <item index="1"><name>Ada</name><value>7</value></item>
+            <item index="2"><name>Grace</name><value>14</value></item>
+            <item index="3"><name>Linus</name><value>21</value></item>
+            <item index="4"><name>Alan</name><value>28</value></item>
+            <item index="5"><name>Donald</name><value>35</value></item>
+        </items>
+        <notes>
+            <note line="1">Aenean ut eros et nisl sagittis vestibulum.</note>
+            <note line="2">Nullam nulla eros, ultricies sit amet, nonummy id, imperdiet feugiat.</note>
+            <note line="3">Sed lectus. Donec mollis hendrerit risus.</note>
+            <note line="4">Phasellus nec sem in justo pellentesque facilisis.</note>
+            <note line="5">Etiam imperdiet imperdiet orci. Nunc nec neque.</note>
+        </notes>
+    </payload>
+</document>

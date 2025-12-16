@@ -12,6 +12,6 @@ public class TestController {
 
     @GetMapping("/teszt")
     public Map<String, String> getTestMessage() {
-        return Map.of("Hello", "Bello", "Foo", "Bar", "hogy", "smint");
+        return Map.of("Hello", "Bello", "Foo", "Bar", "hogy", "smint", "version,", "1.0.1");
     }
 }

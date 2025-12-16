@@ -8,15 +8,19 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.annotation.web.configurers.HeadersConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
-import org.springframework.security.oauth2.core.DelegatingOAuth2TokenValidator;
 import org.springframework.security.oauth2.core.OAuth2TokenValidator;
-import org.springframework.security.oauth2.jwt.*;
+import org.springframework.security.oauth2.jwt.Jwt;
+import org.springframework.security.oauth2.jwt.JwtDecoder;
+import org.springframework.security.oauth2.jwt.JwtTimestampValidator;
+import org.springframework.security.oauth2.jwt.NimbusJwtDecoder;
 import org.springframework.security.oauth2.server.resource.web.BearerTokenAuthenticationEntryPoint;
 import org.springframework.security.oauth2.server.resource.web.access.BearerTokenAccessDeniedHandler;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.LoginUrlAuthenticationEntryPoint;
+import org.springframework.security.web.csrf.CookieCsrfTokenRepository;
 import org.springframework.security.web.header.writers.ReferrerPolicyHeaderWriter;
 import org.springframework.security.web.util.matcher.RequestHeaderRequestMatcher;
+import org.springframework.security.web.servlet.util.matcher.PathPatternRequestMatcher;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Profile;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnWebApplication;
@@ -28,15 +32,13 @@ public class SecurityConfig {
 
     private final KeycloakLogoutHandler keycloakLogoutHandler;
 
-    @Value("${spring.security.oauth2.resourceserver.jwt.jwk-set-uri}")
-    private String jwkSetUri;
-
     public SecurityConfig(KeycloakLogoutHandler keycloakLogoutHandler) {
         this.keycloakLogoutHandler = keycloakLogoutHandler;
     }
 
     @Bean
-    public JwtDecoder jwtDecoder() {
+    @Profile("prod")
+    public JwtDecoder jwtDecoder(@Value("${spring.security.oauth2.resourceserver.jwt.jwk-set-uri}") String jwkSetUri) {
         NimbusJwtDecoder jwtDecoder = NimbusJwtDecoder.withJwkSetUri(jwkSetUri).build();
 
         // Csak a timestamp validációt hagyjuk meg, az issuer validációt kikapcsoljuk
@@ -48,25 +50,27 @@ public class SecurityConfig {
 
     @Bean
     @Profile("prod")
-    public SecurityFilterChain securityFilterChainProd(HttpSecurity http) throws Exception {
+    public SecurityFilterChain securityFilterChainProd(HttpSecurity http) {
         http
-            // We keep CSRF disabled for API style usage; could be refined later
-            .csrf(AbstractHttpConfigurer::disable)
+            .csrf(csrf -> csrf
+                // Session-based (oauth2Login) flows need CSRF; bearer-token API calls don't.
+                .csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse())
+                .ignoringRequestMatchers(new RequestHeaderRequestMatcher("Authorization"))
+            )
             .cors(cors -> {})
             .sessionManagement(sm -> sm.sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED))
             .authorizeHttpRequests(auth -> auth
-                .requestMatchers("/actuator/health", "/actuator/info").permitAll()
-                // optionally allow OPTIONS preflight
-                .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
-                // Secure all API endpoints (including upload & teszt)
-                .requestMatchers("/api/**").authenticated()
-                .anyRequest().permitAll()
+                // Auth nélkül semmi: minden endpoint védett (prod)
+                .anyRequest().authenticated()
             )
             // Browser based login (authorization code) for interactive flows
             .oauth2Login(oauth2 -> {})
             // Accept bearer JWT for API (e.g., frontend app or external clients)
             .oauth2ResourceServer(oauth2 -> oauth2.jwt(jwt -> {}))
             .exceptionHandling(ex -> ex
+                // API calls should never redirect to login (XHR/fetch), always return 401/403.
+                .defaultAuthenticationEntryPointFor(new BearerTokenAuthenticationEntryPoint(), PathPatternRequestMatcher.pathPattern("/api/**"))
+                .defaultAccessDeniedHandlerFor(new BearerTokenAccessDeniedHandler(), PathPatternRequestMatcher.pathPattern("/api/**"))
                 // For API calls with Authorization header -> 401 / 403 style
                 .defaultAuthenticationEntryPointFor(new BearerTokenAuthenticationEntryPoint(), new RequestHeaderRequestMatcher("Authorization"))
                 .defaultAccessDeniedHandlerFor(new BearerTokenAccessDeniedHandler(), new RequestHeaderRequestMatcher("Authorization"))
@@ -93,7 +97,7 @@ public class SecurityConfig {
 
     @Bean
     @Profile("!prod")
-    public SecurityFilterChain securityFilterChainNonProd(HttpSecurity http) throws Exception {
+    public SecurityFilterChain securityFilterChainNonProd(HttpSecurity http) {
         http
             .csrf(AbstractHttpConfigurer::disable)
             .cors(cors -> {})
@@ -102,13 +106,8 @@ public class SecurityConfig {
                 .requestMatchers("/actuator/health", "/actuator/info").permitAll()
                 .requestMatchers("/h2-console/**").permitAll()
                 .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
-                .requestMatchers("/api/**").authenticated()
+                .requestMatchers("/api/**").permitAll()
                 .anyRequest().permitAll()
-            )
-            .oauth2ResourceServer(oauth2 -> oauth2.jwt(jwt -> {}))
-            .exceptionHandling(ex -> ex
-                .defaultAuthenticationEntryPointFor(new BearerTokenAuthenticationEntryPoint(), new RequestHeaderRequestMatcher("Authorization"))
-                .defaultAccessDeniedHandlerFor(new BearerTokenAccessDeniedHandler(), new RequestHeaderRequestMatcher("Authorization"))
             )
             .headers(headers -> headers
                 .frameOptions(HeadersConfigurer.FrameOptionsConfig::disable)

@@ -1,0 +1,23 @@
+{
+  "id": "seed-json-01",
+  "source": "ociprodet",
+  "type": "example",
+  "meta": {
+    "createdBy": "seed-generator",
+    "version": "1.0"
+  },
+  "items": [
+    { "index": 1, "name": "Alpha", "value": 100 },
+    { "index": 2, "name": "Beta", "value": 200 },
+    { "index": 3, "name": "Gamma", "value": 300 },
+    { "index": 4, "name": "Delta", "value": 400 },
+    { "index": 5, "name": "Epsilon", "value": 500 }
+  ],
+  "notes": [
+    "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
+    "Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
+    "Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris.",
+    "Duis aute irure dolor in reprehenderit in voluptate velit esse cillum.",
+    "Excepteur sint occaecat cupidatat non proident, sunt in culpa."
+  ]
+}

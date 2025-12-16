@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document id="seed-xml-07" version="1.0">
+    <header>
+        <source>ociprodet</source>
+        <type>example</type>
+        <createdBy>seed-generator</createdBy>
+    </header>
+    <payload>
+        <items>
+            <item index="1"><name>Apple</name><value>110</value></item>
+            <item index="2"><name>Banana</name><value>220</value></item>
+            <item index="3"><name>Cherry</name><value>330</value></item>
+            <item index="4"><name>Date</name><value>440</value></item>
+            <item index="5"><name>Fig</name><value>550</value></item>
+        </items>
+        <notes>
+            <note line="1">Pellentesque habitant morbi tristique senectus et netus et malesuada fames.</note>
+            <note line="2">Fusce ac felis sit amet ligula pharetra condimentum.</note>
+            <note line="3">Maecenas nec odio et ante tincidunt tempus. Donec vitae sapien ut libero.</note>
+            <note line="4">Aenean vulputate eleifend tellus. Aenean leo ligula, porttitor eu, consequat.</note>
+            <note line="5">Quisque rutrum. Aenean imperdiet. Etiam ultricies nisi vel augue.</note>
+        </notes>
+    </payload>
+</document>

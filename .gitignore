@@ -61,6 +61,7 @@ target/
 !.mvn/wrapper/maven-wrapper.jar
 !**/src/main/**/target/
 !**/src/test/**/target/
+.m2/
 
 # IDE
 .idea/
@@ -80,12 +81,5 @@ settings.xml
 application-local.properties
 application-secret.properties
 
-# Docker
-.dockerignore
-docker-compose.yml
-
 # Uploads
 uploads/
-
-# Docs (kept locally, not versioned)
-docs/
